@@ -1,0 +1,197 @@
+-- Database: Club
+
+-- DROP DATABASE IF EXISTS "Club";
+
+CREATE DATABASE "Club"
+    WITH
+    OWNER = postgres
+    ENCODING = 'UTF8'
+    LC_COLLATE = 'Spanish_Spain.1252'
+    LC_CTYPE = 'Spanish_Spain.1252'
+    LOCALE_PROVIDER = 'libc'
+    TABLESPACE = pg_default
+    CONNECTION LIMIT = -1
+    IS_TEMPLATE = False;
+
+-- Table: public.Clubes
+
+-- DROP TABLE IF EXISTS public."Clubes";
+
+CREATE TABLE IF NOT EXISTS public."Clubes"
+(
+    "idClub" bigint NOT NULL,
+    "nombreClub" character varying COLLATE pg_catalog."default",
+    "miembrosClub" bigint,
+    "sedeClub" character varying COLLATE pg_catalog."default",
+    CONSTRAINT "Clubes_pkey" PRIMARY KEY ("idClub")
+)
+
+TABLESPACE pg_default;
+
+ALTER TABLE IF EXISTS public."Clubes"
+    OWNER to postgres;
+
+-- Table: public.Eventos
+
+-- DROP TABLE IF EXISTS public."Eventos";
+
+CREATE TABLE IF NOT EXISTS public."Eventos"
+(
+    "idEvento" bigint NOT NULL,
+    "nombreEvento" character varying COLLATE pg_catalog."default",
+    "esPublico" boolean,
+    "precioEntrada" bigint,
+    "fechaInicio" time without time zone,
+    "fechaFin" time without time zone,
+    "clubId" bigint,
+    CONSTRAINT "Eventos_pkey" PRIMARY KEY ("idEvento"),
+    CONSTRAINT club_even FOREIGN KEY ("clubId")
+        REFERENCES public."Clubes" ("idClub") MATCH SIMPLE
+        ON UPDATE NO ACTION
+        ON DELETE NO ACTION
+)
+
+TABLESPACE pg_default;
+
+ALTER TABLE IF EXISTS public."Eventos"
+    OWNER to postgres;
+
+-- Table: public.Motos
+
+-- DROP TABLE IF EXISTS public."Motos";
+
+CREATE TABLE IF NOT EXISTS public."Motos"
+(
+    "idMoto" bigint,
+    "matriculaMoto" bigint,
+    "colorMoto" character varying COLLATE pg_catalog."default",
+    usu_id bigint,
+    CONSTRAINT usu_moto FOREIGN KEY (usu_id)
+        REFERENCES public."Usuarios" ("idUsuario") MATCH SIMPLE
+        ON UPDATE NO ACTION
+        ON DELETE NO ACTION
+)
+
+TABLESPACE pg_default;
+
+ALTER TABLE IF EXISTS public."Motos"
+    OWNER to postgres;
+
+-- Table: public.Sedes
+
+-- DROP TABLE IF EXISTS public."Sedes";
+
+CREATE TABLE IF NOT EXISTS public."Sedes"
+(
+    "idSede" bigint,
+    "nombreSede" character varying COLLATE pg_catalog."default",
+    "domicilioSede" character varying COLLATE pg_catalog."default",
+    "clubId" bigint,
+    CONSTRAINT club_sede FOREIGN KEY ("clubId")
+        REFERENCES public."Clubes" ("idClub") MATCH SIMPLE
+        ON UPDATE NO ACTION
+        ON DELETE NO ACTION
+)
+
+TABLESPACE pg_default;
+
+ALTER TABLE IF EXISTS public."Sedes"
+    OWNER to postgres;
+
+-- Table: public.Solicitudes
+
+-- DROP TABLE IF EXISTS public."Solicitudes";
+
+CREATE TABLE IF NOT EXISTS public."Solicitudes"
+(
+    "idSolicitud" bigint NOT NULL,
+    "codigoClub" character varying COLLATE pg_catalog."default",
+    usuario_id bigint,
+    club_id bigint,
+    CONSTRAINT "Solicitudes_pkey" PRIMARY KEY ("idSolicitud"),
+    CONSTRAINT club_sol FOREIGN KEY (club_id)
+        REFERENCES public."Clubes" ("idClub") MATCH SIMPLE
+        ON UPDATE NO ACTION
+        ON DELETE NO ACTION,
+    CONSTRAINT usu_sol FOREIGN KEY (usuario_id)
+        REFERENCES public."Usuarios" ("idUsuario") MATCH SIMPLE
+        ON UPDATE NO ACTION
+        ON DELETE NO ACTION
+)
+
+TABLESPACE pg_default;
+
+ALTER TABLE IF EXISTS public."Solicitudes"
+    OWNER to postgres;
+
+-- Table: public.Usuarios
+
+-- DROP TABLE IF EXISTS public."Usuarios";
+
+CREATE TABLE IF NOT EXISTS public."Usuarios"
+(
+    "idUsuario" bigint NOT NULL,
+    "nombreUsuario" character varying COLLATE pg_catalog."default",
+    "apellidoUsuario" character varying COLLATE pg_catalog."default",
+    "dniUsuario" character varying COLLATE pg_catalog."default",
+    "emailUsuario" character varying COLLATE pg_catalog."default",
+    CONSTRAINT "Usuarios_pkey" PRIMARY KEY ("idUsuario")
+)
+
+TABLESPACE pg_default;
+
+ALTER TABLE IF EXISTS public."Usuarios"
+    OWNER to postgres;
+
+-- Index: fki_club_even
+
+-- DROP INDEX IF EXISTS public.fki_club_even;
+
+CREATE INDEX IF NOT EXISTS fki_club_even
+    ON public."Eventos" USING btree
+    ("clubId" ASC NULLS LAST)
+    TABLESPACE pg_default;
+-- Index: fki_club_evento
+
+-- DROP INDEX IF EXISTS public.fki_club_evento;
+
+CREATE INDEX IF NOT EXISTS fki_club_evento
+    ON public."Eventos" USING btree
+    ("clubId" ASC NULLS LAST)
+    TABLESPACE pg_default;
+
+-- Index: fki_usu_moto
+
+-- DROP INDEX IF EXISTS public.fki_usu_moto;
+
+CREATE INDEX IF NOT EXISTS fki_usu_moto
+    ON public."Motos" USING btree
+    (usu_id ASC NULLS LAST)
+    TABLESPACE pg_default;
+
+-- Index: fki_club_sede
+
+-- DROP INDEX IF EXISTS public.fki_club_sede;
+
+CREATE INDEX IF NOT EXISTS fki_club_sede
+    ON public."Sedes" USING btree
+    ("clubId" ASC NULLS LAST)
+    TABLESPACE pg_default;
+
+-- Index: fki_club_sol
+
+-- DROP INDEX IF EXISTS public.fki_club_sol;
+
+CREATE INDEX IF NOT EXISTS fki_club_sol
+    ON public."Solicitudes" USING btree
+    (club_id ASC NULLS LAST)
+    TABLESPACE pg_default;
+-- Index: fki_f
+
+-- DROP INDEX IF EXISTS public.fki_f;
+
+CREATE INDEX IF NOT EXISTS fki_f
+    ON public."Solicitudes" USING btree
+    (usuario_id ASC NULLS LAST)
+    TABLESPACE pg_default;
+
