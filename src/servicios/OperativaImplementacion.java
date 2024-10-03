@@ -31,7 +31,7 @@ public class OperativaImplementacion implements OperativaInterfaz {
 	
 	public void altaMiembro(List<MiembrosDto> listaMiembros) {
 		
-		MiembrosDto miembroNuevo =new MiembrosDto (pedirDatos);
+		MiembrosDto miembroNuevo =new MiembrosDto ();
 		String usuarioNuevo= "INSERT INTO tabla (col4, col3) VALUES (val4, val3)";
 		
 		
