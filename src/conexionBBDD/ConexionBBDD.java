@@ -38,7 +38,7 @@ public class ConexionBBDD {
 
 		
 
-			String consultaSQL = "SELECT * FROM public.\"Usuarios\"";
+			String consultaSQL = "SELECT * FROM public.\"usuarios\"";
 
 
 			PreparedStatement preparedStatement = conexion.prepareStatement(consultaSQL);

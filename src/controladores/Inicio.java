@@ -32,9 +32,10 @@ public class Inicio {
 				cerrarMenu=true;
 				break;
 			case 1:
-				oi.crearBiblioteca(listaBibliotecas);
+				mi.gestionMiembros();
 				break;
 			case 2:
+				mi.gestionClubes();
 				break;
 			default: 
 				System.out.println("Introduzca una opcion valida");
