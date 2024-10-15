@@ -1,5 +1,8 @@
 package dtos;
 
+import java.sql.ResultSet;
+import java.util.List;
+
 public class MiembrosDto {
 
 	long idUsuario=11111;
@@ -61,6 +64,12 @@ public class MiembrosDto {
 	public String toString() {
 		return "MiembrosDto [idUsuario=" + idUsuario + ", nombreUsuario=" + nombreUsuario + ", apellidoUsuario="
 				+ apellidoUsuario + ", dniUsuario=" + dniUsuario + ", emailUsuario=" + emailUsuario + "]";
+	}
+
+
+	public List<MiembrosDto> resultset(ResultSet resultadoConsulta) {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 	

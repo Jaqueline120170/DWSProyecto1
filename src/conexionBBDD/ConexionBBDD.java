@@ -26,27 +26,17 @@ public class ConexionBBDD {
 
 		try {
 
-			
-
 			Class.forName("org.postgresql.Driver");
-
-	
 
 			conexion = DriverManager.getConnection(URL, USER, PASSWORD);
 
 			System.out.println("Conexión exitosa a la base de datos.");
 
-		
-
 			String consultaSQL = "SELECT * FROM public.\"usuarios\"";
-
 
 			PreparedStatement preparedStatement = conexion.prepareStatement(consultaSQL);
 
-	
-
 			ResultSet resultado = preparedStatement.executeQuery();
-
 
 			while (resultado.next()) {
 			  
@@ -61,7 +51,6 @@ public class ConexionBBDD {
 			                        + ", DNI: " + dniUsuario + ", Email: " + emailUsuario);
 			}
 			
-
 			resultado.close();
 
 			preparedStatement.close();
@@ -78,25 +67,10 @@ public class ConexionBBDD {
 
 			e.printStackTrace();
 
-		} finally {
+		} 
 
-			if (conexion != null) {
-
-				try {
-
-					conexion.close();
-
-					System.out.println("Conexión cerrada.");
-
-				} catch (SQLException e) {
-
-					e.printStackTrace();
-
-				}
-
-			}
-
-		}
+		
+		
 
 	}
 

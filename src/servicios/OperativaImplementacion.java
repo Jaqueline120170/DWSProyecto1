@@ -15,7 +15,7 @@ public class OperativaImplementacion implements OperativaInterfaz {
 		
 		System.out.println("DAR ALTA MIEMBRO");
 		
-		long idCalculado = calculoId(listaMiembros);
+		long idCalculado = utilidades.Util.calcularIdUsuario();
 		System.out.println("Introduzca su nombre");
 		String nombre =sc.next();
 		System.out.println("Introduzca sus apellidos");
@@ -37,20 +37,6 @@ public class OperativaImplementacion implements OperativaInterfaz {
 		
 	}
 	
-	private long calculoId (List<MiembrosDto>listaMiembros) {
-		
-		  long idCalculado;
-	        int tamanioLista = listaMiembros.size();
-	        if (tamanioLista == 0)
-	        {
-	            idCalculado = 1;
-	        }
-	        else
-	        {
-	            idCalculado = listaMiembros.get(tamanioLista-1).getIdUsuario();
-	        }
-
-	        return idCalculado;
-	}
+	
 
 }
