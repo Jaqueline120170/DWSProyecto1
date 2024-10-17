@@ -1,44 +1,89 @@
 package servicios;
-import java.beans.Statement;
+
+import java.io.IOException;
 import java.sql.Connection;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.List;
+import java.sql.Statement;
 
 import controladores.Inicio;
-import dtos.MiembrosDto;
-
+import dtos.ClubDto;
+import dtos.MiembroDto;
 
 public class ConsultaslImplementacion implements ConsultasInterfaz {
 
-    @Override
-    public List<MiembrosDto> consultaUsuario(Connection conexion) {
-        
-        java.sql.Statement declaracionSQL = null;
-        ResultSet resultadoConsulta = null;
-        MiembrosDto miembro = new 	MiembrosDto();
-        
-        try {
-            // Se abre una declaración
-            declaracionSQL = conexion.createStatement();
-            // Se define la consulta de la declaración y se ejecuta
-            resultadoConsulta = declaracionSQL.executeQuery("SELECT * FROM public.\"usuarios\"");
-            
-            // Llamada a la conversión a UsuarioDto
-            Inicio.listaMiembros =miembro.resultset(resultadoConsulta);  // Se asigna a la lista estática
-            
-            int i = Inicio.listaMiembros.size();
-            System.out.println("[INFORMACIÓN-ConsultaPostgresqlImplementacion-consultaUsuario] Número de usuarios: " + i);
-            
-            // Cierre de conexión, declaración y resultado
-            resultadoConsulta.close();
-            declaracionSQL.close();
-            conexion.close();
-            
-        } catch (SQLException e) {
-            System.err.println("[ERROR-ConsultaPostgresqlImplementacion-consultaUsuario] Error generando o ejecutando la declaración SQL: " + e.getMessage());
-        }
-        
-        return Inicio.listaMiembros;
-    }
+	ConexionBBDDInterfaz cbd = new ConexionBBDDPostgresqlImplementacion();
+	@Override
+	public void cargaBBDD()throws IOException {
+		
+		Connection conexion = null;
+		Statement sentencia=null;
+		try {
+			
+			conexion = cbd.abrirConexion();
+			sentencia = conexion.createStatement();
+			ResultSet resultado = sentencia.executeQuery(" SELECT * FROM usuarios ");
+			
+			while(resultado.next()) {
+				MiembroDto miembro = new MiembroDto();
+				
+				miembro.setIdUsuario(resultado.getLong(1));
+				miembro.setNombreUsuario(resultado.getString(2));
+				miembro.setApellidoUsuario(resultado.getString(3));
+				miembro.setDniUsuario(resultado.getString(4));
+				miembro.setEmailUsuario(resultado.getString(5));
+				
+				Inicio.listaMiembros.add(miembro);
+			}
+			
+		}catch(SQLException e) {
+			System.out.println("Error al hacer la carga inicial de usuarios "+e.getMessage());
+		}finally {
+			
+			cbd.cerrarConexion();
+		}
+		
+	}
+	
+	@Override
+	public void eliminarMiembroDeBBDD(String dniUsuario) throws IOException {
+	    Connection conexion = null;
+	    PreparedStatement sentencia = null;
+
+	    try {
+	        // Abrir conexión a la base de datos
+	        conexion = cbd.abrirConexion();
+
+	        // Consulta SQL para eliminar el miembro por su DNI
+	        String eliminarMiembroSQL = "DELETE FROM usuarios WHERE dniusuario = ?";
+	        sentencia = conexion.prepareStatement(eliminarMiembroSQL);
+	        sentencia.setString(1, dniUsuario);
+
+	        // Ejecutar la consulta y verificar cuántas filas fueron afectadas
+	        int filasAfectadas = sentencia.executeUpdate();
+
+	        if (filasAfectadas > 0) {
+	            System.out.println("El miembro con DNI " + dniUsuario + " se ha eliminado con éxito de la base de datos.");
+	        } else {
+	            System.out.println("No se encontró ningún miembro con el DNI proporcionado en la base de datos.");
+	        }
+
+	    } catch (SQLException e) {
+	        System.out.println("Error al eliminar el miembro de la base de datos: " + e.getMessage());
+	    } finally {
+	        // Cerrar la conexión y el statement si están abiertos
+	        try {
+	            if (sentencia != null) {
+	                sentencia.close();
+	            }
+	            if (conexion != null) {
+	                cbd.cerrarConexion();
+	            }
+	        } catch (SQLException e) {
+	            System.out.println("Error al cerrar la conexión: " + e.getMessage());
+	        }
+	    }
+	}
+
 }

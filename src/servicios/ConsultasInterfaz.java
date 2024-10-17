@@ -1,11 +1,8 @@
 package servicios;
 
-import java.sql.Connection;
-import java.util.List;
-
-import dtos.MiembrosDto;
+import java.io.IOException;
 
 public interface ConsultasInterfaz {
-	
-	public List<MiembrosDto> consultaUsuario(Connection conexion);
+	public void cargaBBDD()throws IOException ;
+	public void eliminarMiembroDeBBDD(String dniUsuario) throws IOException;
 }

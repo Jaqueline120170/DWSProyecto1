@@ -8,17 +8,15 @@ import java.util.List;
 import java.util.Scanner;
 import servicios.MenuImplementacion;
 import servicios.MenuInterfaz;
-import servicios.OperativaInterfaz;
-import servicios.OperativaImplementacion;
-import dtos.ClubesDto;
-import dtos.MiembrosDto;
+import dtos.ClubDto;
+import dtos.MiembroDto;
 
 public class Inicio {
 	
 	//Listas estaticas para poder llamarlas desde cualquier aprte del codigocuando se necesiten
 	//como referencia para otras funcionalidades.
-	public static List<ClubesDto> listaClubes = new ArrayList <ClubesDto>();
-	public static List<MiembrosDto> listaMiembros = new ArrayList<MiembrosDto>();
+	public static List<ClubDto> listaClubes = new ArrayList <ClubDto>();
+	public static List<MiembroDto> listaMiembros = new ArrayList<MiembroDto>();
 	public static Scanner sc= new Scanner(System.in);
 	static LocalDateTime fechaActual = LocalDateTime.now();
 	static DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
@@ -29,7 +27,6 @@ public class Inicio {
 		
 		//Contructores de clases e interfaces
 		MenuInterfaz mi = new MenuImplementacion();
-		OperativaInterfaz oi = new OperativaImplementacion();
 		
 		try {
 		int opcion;
@@ -64,4 +61,3 @@ public class Inicio {
 
 }
 }
-

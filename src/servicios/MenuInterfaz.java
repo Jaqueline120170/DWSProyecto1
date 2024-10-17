@@ -1,10 +1,12 @@
 package servicios;
 
+import java.io.IOException;
+
 public interface MenuInterfaz {
 	
 	public int mostrarMenuYSeleccion();
-	public void gestionMiembros();
-	public void gestionClubes();
+	public void gestionMiembros()throws IOException;
+	public void gestionClubes()throws IOException;
 
 
 }

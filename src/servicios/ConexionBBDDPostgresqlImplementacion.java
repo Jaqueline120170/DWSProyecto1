@@ -1,43 +1,69 @@
 package servicios;
 
+
+import java.io.IOException;
 import java.sql.Connection;
 import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
+
+import controladores.Inicio;
 
 public class ConexionBBDDPostgresqlImplementacion implements ConexionBBDDInterfaz {
 
-    @Override
-    public Connection GenerarConexion() {
-        String host = "localhost";
-        String puerto = "5432";
-        String nombreBD = "Club";
-        String usuario = "postgres";
-        String contraseña = "4lt41r";
+	// URL de conexión a la base de datos
+	private static final String URL = "jdbc:postgresql://localhost:5432/Club"; 
 
-        // Cadena de conexión JDBC
-        String url = "jdbc:postgresql://" + host + ":" + puerto + "/" + nombreBD;
+	private static final String USER = "postgres";
 
-        Connection conn = null;
+	private static final String PASSWORD = "4lt41r";
+	Connection conexion = null;
+	@Override
+	public Connection abrirConexion() {
+		
+		try {
+			
+            Class.forName("org.postgresql.Driver");
 
-        try {
-            // Intentar establecer conexión a la base de datos
-            conn = DriverManager.getConnection(url, usuario, contraseña);
-            System.out.println("Conexión establecida con éxito");
 
-            // Verificar si la conexión no es null
-            if (conn == null || conn.isClosed()) {
-                System.out.println("La conexión no se ha establecido correctamente.");
-            }
+            conexion = DriverManager.getConnection(URL, USER, PASSWORD);
 
-        } catch (SQLException e) {
-            System.out.println("Error al establecer la conexión: " + e.getMessage());
-        }
+            System.out.println("Conexión exitosa a la base de datos.");
+            
+           
+		}catch(SQLException sqle) {
+			System.out.println("Error al conectar con la base de datos");
+		}catch (ClassNotFoundException e) {
 
-        // Verificar una última vez antes de retornar
-        if (conn == null) {
-            System.out.println("La conexión es null, por lo que no puede ser usada.");
-        }
+            System.out.println("Error al cargar el controlador de PostgreSQL.");
 
-        return conn; // Retorna la conexión para ser usada en otro lugar si es necesario
-    }
+            e.printStackTrace();
+		}
+		
+		return conexion;
+		
+	}
+
+	@Override
+	public void cerrarConexion()throws IOException {
+		
+		 if (conexion != null) {
+
+             try {
+
+                 conexion.close();
+
+                 System.out.println("Conexión cerrada.");
+
+             } catch (SQLException e) {
+
+                 e.printStackTrace();
+
+             }
+
+         }
+		
+	}
+
 }

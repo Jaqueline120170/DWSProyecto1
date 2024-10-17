@@ -3,7 +3,7 @@ package dtos;
 import java.sql.ResultSet;
 import java.util.List;
 
-public class MiembrosDto {
+public class MiembroDto {
 
 	long idUsuario=11111;
 	String nombreUsuario="aaaaa";
@@ -12,7 +12,7 @@ public class MiembrosDto {
 	String emailUsuario="aaaaa";
 	
 	
-	public MiembrosDto(long idUsuario, String nombreUsuario, String apellidoUsuario, String dniUsuario,
+	public MiembroDto(long idUsuario, String nombreUsuario, String apellidoUsuario, String dniUsuario,
 			String emailUsuario) {
 		super();
 		this.idUsuario = idUsuario;
@@ -23,7 +23,7 @@ public class MiembrosDto {
 	}
 	
 	
-	public MiembrosDto() {
+	public MiembroDto() {
 		super();
 	}
 
@@ -67,7 +67,7 @@ public class MiembrosDto {
 	}
 
 
-	public List<MiembrosDto> resultset(ResultSet resultadoConsulta) {
+	public List<MiembroDto> resultset(ResultSet resultadoConsulta) {
 		// TODO Auto-generated method stub
 		return null;
 	}

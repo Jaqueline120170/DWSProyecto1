@@ -1,6 +1,6 @@
 package dtos;
 
-public class ClubesDto {
+public class ClubDto {
 	
 	long idClub=11111;
 	String nombreClub="aaaaa";
@@ -9,11 +9,11 @@ public class ClubesDto {
 	
 	
 	
-	public ClubesDto() {
+	public ClubDto() {
 		super();
 	}
 
-	public ClubesDto(long idClub, String nombreClub, int miembrosClub, String sedeClub) {
+	public ClubDto(long idClub, String nombreClub, int miembrosClub, String sedeClub) {
 		super();
 		this.idClub = idClub;
 		this.nombreClub = nombreClub;

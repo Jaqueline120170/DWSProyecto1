@@ -27,5 +27,26 @@ public static long calcularIdUsuario() {
 		
 	}
 
+public static long calcularIdClub() {
+	
+	long nuevoIdClub = 0;
+	int tamanio = Inicio.listaClubes.size();
 
+	if (tamanio > 0)
+	{
+
+	    nuevoIdClub = Inicio.listaClubes.get(tamanio - 1).getIdClub()+1;
+
+	}
+	else
+	{
+
+	    nuevoIdClub = 1;
+
+	}
+
+	return nuevoIdClub;
+
+	
+}
 }

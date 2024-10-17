@@ -14,7 +14,7 @@ public class GestorFicheros {
 	        String mesFecha = DateTimeFormatter.ofPattern("MM").format(fechaActual);
 	        String anioFecha = DateTimeFormatter.ofPattern("yy").format(fechaActual);
 	        String fechaCompleta = diasFecha + mesFecha + anioFecha;
-	        String rutaArchivo = "C:\\Users\\PC\\eclipse-workspace\\edu.DAWproyecto1\\fivherolog" + fechaCompleta + ".txt";
+	        String rutaArchivo = "C:\\Users\\PC\\eclipse-workspace\\edu.DAWproyecto1\\ficherolog" + fechaCompleta + ".txt";
 	        return rutaArchivo;
 	    }
 

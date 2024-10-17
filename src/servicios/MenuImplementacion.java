@@ -1,34 +1,36 @@
 package servicios;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
-import dtos.MiembrosDto;
+import dtos.MiembroDto;
 
 public class MenuImplementacion implements MenuInterfaz {
 	Scanner sc = new Scanner (System.in);
-	OperativaInterfaz oi = new OperativaImplementacion();
-	List<MiembrosDto> listaMiembros = new ArrayList<MiembrosDto>();
+	MiembroInterfaz mie = new MiembroImplementacion();
+	ClubInterfaz ci = new ClubImplementacion();
+	List<MiembroDto> listaMiembros = new ArrayList<MiembroDto>();
 	
 public int mostrarMenuYSeleccion() {
 		
 		System.out.println("0. Cerrar menu");
-		System.out.println("1. Gestiones usuarios");
+		System.out.println("1. Gestiones Usuarios");
 		System.out.println("2. Gestiones Clubes");
 		System.out.println("Seleccione una opcion");
 		int seleccionUsuario= sc.nextInt();
 		return seleccionUsuario;
 	}
 	
-public void gestionMiembros() {
+public void gestionMiembros()throws IOException {
 		
 		int opcionMiembro = menuGestionMiembros();
 		switch(opcionMiembro) {
 		case 0 :
 			break;
 		case 1:
-			oi.altaMiembro( listaMiembros);
+			mie.altaMiembro();
 			break;
 		case 2:
 			//oi.solicitudClub();
@@ -57,7 +59,7 @@ private int menuGestionMiembros() {
 	return seleccionGestionMiembro;
 }
 
-public void gestionClubes() {
+public void gestionClubes()throws IOException {
 	
 	int opcionClub = menuGestionClubes();
 	switch(opcionClub) {
@@ -70,7 +72,7 @@ public void gestionClubes() {
 		//oi.registrarMiembro();
 		break;
 	case 3:
-		//oi.eliminarMiembro();
+		ci.eliminarMiembro();
 		break;
 	case 4:
 		//oi.registrarSede();
