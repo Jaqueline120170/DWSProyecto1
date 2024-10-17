@@ -26,38 +26,50 @@ public class ClubImplementacion implements ClubInterfaz {
 		return club;
 	}
 	
-	//Método para dar de alta un club
-	public void altaClub()throws IOException{
-		
-		ConsultasInterfaz consulta = new ConsultaslImplementacion();
-		consulta.cargaBBDD();
-		ClubDto nuevoClub= pedirDatosClub();
-		
-		try {
-			
-			cbd.abrirConexion();
-			
-			String insertarClub="INSERT INTO clubes (idclub, nombreclub,sedeclub) VALUES (?,?,?)";	
-			PreparedStatement sentencia = cbd.abrirConexion().prepareStatement(insertarClub);
-			
-			sentencia.setLong(1, nuevoClub.getIdClub());
-			sentencia.setString(2,nuevoClub.getNombreClub());
-			sentencia.setString(3, nuevoClub.getSedeClub());
-			
-			
-			sentencia.executeUpdate();
-			
-		}catch(SQLException ex) {
-			System.out.println("Error al insertar datos"+ex.getMessage());
-		}finally {
-			cbd.cerrarConexion();
-		}
-		
-		Inicio.listaClubes.add(nuevoClub);
-		System.out.println("Alta exitosa");
-		
+	// Método para dar de alta un club sin usar listas locales
+	public void altaClub() throws IOException {
+	    ClubDto nuevoClub = pedirDatosClub(); // Obtener los datos del nuevo club
+
+	    try {
+	        // Abrir la conexión a la base de datos
+	        cbd.abrirConexion();
+
+	        // Consulta SQL para insertar el nuevo club
+	        String insertarClub = "INSERT INTO clubes (idclub, nombreclub, sedeclub) VALUES (?, ?, ?)";
+	        PreparedStatement sentencia = cbd.abrirConexion().prepareStatement(insertarClub);
+
+	        // Establecer los parámetros en la consulta
+	        sentencia.setLong(1, nuevoClub.getIdClub());
+	        sentencia.setString(2, nuevoClub.getNombreClub());
+	        sentencia.setString(3, nuevoClub.getSedeClub());
+
+	        // Ejecutar la inserción en la base de datos
+	        int filasAfectadas = sentencia.executeUpdate();
+
+	        // Verificar si la inserción fue exitosa
+	        if (filasAfectadas > 0) {
+	            System.out.println("Alta exitosa. El club ha sido registrado en la base de datos.");
+	        } else {
+	            System.out.println("No se pudo registrar el club. Inténtelo de nuevo.");
+	        }
+	    } catch (SQLException ex) {
+	        System.out.println("Error al insertar datos: " + ex.getMessage());
+	    } finally {
+	        // Cerrar la conexión a la base de datos
+	        cbd.cerrarConexion();
+	    }
 	}
 	
+	@Override
+	public void eliminarMiembro() throws IOException {
+	    System.out.println("Introduzca el DNI del miembro que desea eliminar:");
+	    String dni = Inicio.sc.nextLine();
+
+	    ConsultasInterfaz consulta = new ConsultaslImplementacion();
+	    consulta.eliminarMiembroDeBBDD(dni);
+	}
+
+	/*
 	// Método para eliminar un miembro del club
 	public void eliminarMiembro() throws IOException {
 	    boolean existe = false;
@@ -79,6 +91,7 @@ public class ClubImplementacion implements ClubInterfaz {
 	            existe = true;
 	            break;
 	        }
+	        
 	    }
 
 	    // Si el miembro existe, proceder a eliminarlo de la base de datos
@@ -109,4 +122,5 @@ public class ClubImplementacion implements ClubInterfaz {
 	        System.out.println("El miembro que desea eliminar no existe. Verifique y vuelva a intentar.");
 	    }
 	}
+	*/
 }
