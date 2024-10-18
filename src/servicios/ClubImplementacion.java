@@ -1,7 +1,9 @@
 package servicios;
 
 import java.io.IOException;
+import java.sql.Connection;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.List;
 import controladores.Inicio;
@@ -61,13 +63,107 @@ public class ClubImplementacion implements ClubInterfaz {
 	}
 	
 	@Override
-	public void eliminarMiembro() throws IOException {
-	    System.out.println("Introduzca el DNI del miembro que desea eliminar:");
-	    String dni = Inicio.sc.nextLine();
+	public void eliminarClub() throws IOException {
+	    
+	    String club =utilidades.Util.pedirNombreClub();
 
-	    ConsultasInterfaz consulta = new ConsultaslImplementacion();
-	    consulta.eliminarMiembroDeBBDD(dni);
+	    ConsultasInterfaz consultaClub = new ConsultaslImplementacion();
+	    consultaClub.eliminarClubDeBBDD(club);
 	}
+	
+	public void modificarDatosClub() throws IOException {
+	    String nombreClub = utilidades.Util.pedirNombreClub();
+	    boolean clubEncontrado = false;
+
+	    // Verificar si el club existe en la base de datos
+	    try (Connection conexion = cbd.abrirConexion();
+	         PreparedStatement verificarSentencia = conexion.prepareStatement("SELECT * FROM clubes WHERE nombreclub = ?")) {
+
+	        verificarSentencia.setString(1, nombreClub);
+	        ResultSet resultado = verificarSentencia.executeQuery();
+
+	        if (resultado.next()) {
+	            clubEncontrado = true;
+
+	            // Si el club existe, mostrar opciones de modificación
+	            int campoIntroducido = mostrarCamposYseleccionParaClub();
+
+	            if (campoIntroducido >= 1 && campoIntroducido <= 2) {
+	                modificarCampoClubEnBBDD(nombreClub, campoIntroducido);
+	            } else {
+	                System.out.println("[ERROR] - Opción no válida. Intente nuevamente.");
+	            }
+	        } else {
+	            System.out.println("El club no existe.");
+	        }
+	    } catch (SQLException e) {
+	        System.err.println("Error al buscar el club en la base de datos: " + e.getMessage());
+	    }
+	}
+
+	// Método para modificar el campo del club en la base de datos
+	private void modificarCampoClubEnBBDD(String nombreClub, int campoIntroducido) throws IOException {
+	    String nuevoValor = "";
+
+	    // Obtener el nuevo valor para el campo seleccionado
+	    switch (campoIntroducido) {
+	        case 1:
+	            System.out.println("[INFO] - Escriba el nuevo nombre del club:");
+	            nuevoValor = Inicio.sc.nextLine();
+	            actualizarCampoEnBBDDClub("nombreclub", nuevoValor, nombreClub);
+	            break;
+	        case 2:
+	            System.out.println("[INFO] - Escriba la nueva sede del club:");
+	            nuevoValor = Inicio.sc.nextLine();
+	            actualizarCampoEnBBDDClub("sedeclub", nuevoValor, nombreClub);
+	            break;
+	        default:
+	            System.out.println("[ERROR] - Opción no válida.");
+	            break;
+	    }
+	}
+
+	// Método para realizar la actualización en la base de datos
+	private void actualizarCampoEnBBDDClub(String campo, String nuevoValor, String nombreClub)throws IOException {
+	    String consultaSQL = "UPDATE clubes SET " + campo + " = ? WHERE nombreclub = ?";
+
+	    try (Connection conexion = cbd.abrirConexion();
+	         PreparedStatement sentencia = conexion.prepareStatement(consultaSQL)) {
+
+	        // Establecer los valores para la actualización
+	        sentencia.setString(1, nuevoValor);
+	        sentencia.setString(2, nombreClub);
+
+	        // Ejecutar la actualización
+	        int filasAfectadas = sentencia.executeUpdate();
+
+	        if (filasAfectadas > 0) {
+	            System.out.println("[INFO] - El campo " + campo + " ha sido actualizado correctamente.");
+	        } else {
+	            System.out.println("[ERROR] - No se pudo actualizar el campo.");
+	        }
+	    } catch (SQLException e) {
+	        System.err.println("Error al actualizar el campo en la base de datos: " + e.getMessage());
+	    }
+	}
+
+	// Método para mostrar los campos disponibles para modificar en el club
+	private int mostrarCamposYseleccionParaClub() {
+	    int campoIntroducido;
+
+	    System.out.println("1. Nombre del club");
+	    System.out.println("2. Sede del club");
+
+	    String entrada = Inicio.sc.nextLine();
+	    try {
+	        campoIntroducido = Integer.parseInt(entrada);
+	    } catch (NumberFormatException e) {
+	        campoIntroducido = -1;
+	    }
+
+	    return campoIntroducido;
+	}
+
 
 	/*
 	// Método para eliminar un miembro del club

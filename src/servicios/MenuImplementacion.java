@@ -15,10 +15,12 @@ public class MenuImplementacion implements MenuInterfaz {
 	
 public int mostrarMenuYSeleccion() {
 		
+		System.out.println("##########################");
 		System.out.println("0. Cerrar menu");
 		System.out.println("1. Gestiones Usuarios");
 		System.out.println("2. Gestiones Clubes");
 		System.out.println("Seleccione una opcion");
+		System.out.println("##########################");
 		int seleccionUsuario= sc.nextInt();
 		return seleccionUsuario;
 	}
@@ -41,6 +43,12 @@ public void gestionMiembros()throws IOException {
 		case 4:
 			//oi.registrarMoto();
 			break;
+		case 5:
+			mie.modificarDatosMiembro();
+			break;
+		case 6:
+			mie.eliminarMiembro();
+			break;
 		default:
 			System.out.println("Introduzca una opcion valida");
 			break;
@@ -49,12 +57,16 @@ public void gestionMiembros()throws IOException {
 
 private int menuGestionMiembros() {
 	int seleccionGestionMiembro;
+	System.out.println("##########################");
 	System.out.println("0. Volver al inicio");
 	System.out.println("1. Dar alta Miembro");
 	System.out.println("2. Enviar solicitud a Club");
 	System.out.println("3. Crear una ruta");
 	System.out.println("4. Registrar una moto");
+	System.out.println("5. Modificar Datos de un club");
+	System.out.println("6. Dar de baja Miembro");
 	System.out.println("Seleccione una opcion");
+	System.out.println("##########################");
 	seleccionGestionMiembro=sc.nextInt();
 	return seleccionGestionMiembro;
 }
@@ -66,19 +78,19 @@ public void gestionClubes()throws IOException {
 	case 0 :
 		break;
 	case 1:
-		//oi.registrarClub();
+		ci.altaClub();
 		break;
 	case 2:
 		//oi.registrarMiembro();
 		break;
 	case 3:
-		ci.eliminarMiembro();
+		ci.eliminarClub();
 		break;
 	case 4:
 		//oi.registrarSede();
 		break;
 	case 5:
-		//oi.crearRuta();
+		ci.modificarDatosClub();
 		break;
 	case 6:
 		//oi.crearEvento();
@@ -91,14 +103,16 @@ public void gestionClubes()throws IOException {
 
 private int menuGestionClubes() {
 int seleccionGestionClub;
+System.out.println("##########################");
 System.out.println("0. Volver al inicio");
 System.out.println("1. Registrar un club");
 System.out.println("2. Registrar a un Miembro");
-System.out.println("3. Eliminar a un Miembro");
+System.out.println("3. Dar de baja un club");
 System.out.println("4. Registrar una sede");
 System.out.println("5. Crear una ruta");
 System.out.println("6. Crear un evento");
 System.out.println("Seleccione una opcion");
+System.out.println("##########################");
 seleccionGestionClub=sc.nextInt();
 return seleccionGestionClub;
 }

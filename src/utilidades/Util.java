@@ -49,4 +49,15 @@ public static long calcularIdClub() {
 
 	
 }
+public static String pedirDni() {
+    System.out.println("Indica el DNI del miembro");
+    String dniMiembro = Inicio.sc.nextLine();
+	return dniMiembro; 
+}
+public static String pedirNombreClub() {
+    System.out.println("Indica el nombre del club");
+    String nombreClub = Inicio.sc.nextLine();
+	return nombreClub; 
+}
+
 }
