@@ -63,7 +63,7 @@ private int menuGestionMiembros() {
 	System.out.println("2. Enviar solicitud a Club");
 	System.out.println("3. Crear una ruta");
 	System.out.println("4. Registrar una moto");
-	System.out.println("5. Modificar Datos de un club");
+	System.out.println("5. Modificar Datos de un miembro");
 	System.out.println("6. Dar de baja Miembro");
 	System.out.println("Seleccione una opcion");
 	System.out.println("##########################");
@@ -95,6 +95,9 @@ public void gestionClubes()throws IOException {
 	case 6:
 		//oi.crearEvento();
 		break;
+	case 7:
+		//oi.crearRuta();
+		break;
 	default:
 		System.out.println("Introduzca una opcion valida");
 		break;
@@ -109,8 +112,9 @@ System.out.println("1. Registrar un club");
 System.out.println("2. Registrar a un Miembro");
 System.out.println("3. Dar de baja un club");
 System.out.println("4. Registrar una sede");
-System.out.println("5. Crear una ruta");
+System.out.println("5. Modificar datos Club");
 System.out.println("6. Crear un evento");
+System.out.println("6. Crear una ruta");
 System.out.println("Seleccione una opcion");
 System.out.println("##########################");
 seleccionGestionClub=sc.nextInt();
